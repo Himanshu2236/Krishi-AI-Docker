@@ -15,8 +15,10 @@ async def connect_db() -> None:
     try:
         client = AsyncIOMotorClient(
             settings.MONGODB_URI,
-            serverSelectionTimeoutMS=1000,
-            timeoutMS=1000,
+            serverSelectionTimeoutMS=800,
+            connectTimeoutMS=800,
+            socketTimeoutMS=800,
+            timeoutMS=800,
         )
         await client.admin.command("ping")
         _client = client
@@ -57,25 +59,44 @@ async def get_collection(name: str):
 
 
 class _MockCursor:
+    """Async-compatible cursor for in-memory fallback collections (Python 3.14 safe)."""
     def __init__(self, docs):
-        self.docs = docs
-        self._idx = 0
+        self._docs = list(docs)
+        self._sort_field = None
+        self._sort_dir = 1
+        self._limit_n = None
 
-    def sort(self, *args, **kwargs):
+    def sort(self, field_or_list, direction=1, *args, **kwargs):
+        if isinstance(field_or_list, list):
+            if field_or_list:
+                self._sort_field = field_or_list[0][0]
+                self._sort_dir = field_or_list[0][1]
+        else:
+            self._sort_field = field_or_list
+            self._sort_dir = direction
         return self
 
-    def limit(self, *args, **kwargs):
+    def limit(self, n, *args, **kwargs):
+        self._limit_n = n
         return self
+
+    def _get_docs(self):
+        docs = list(self._docs)
+        if self._sort_field:
+            docs.sort(
+                key=lambda d: d.get(self._sort_field, ""),
+                reverse=(self._sort_dir == -1)
+            )
+        if self._limit_n is not None:
+            docs = docs[:self._limit_n]
+        return docs
 
     def __aiter__(self):
-        return self
+        return self._iterate()
 
-    async def __anext__(self):
-        if self._idx < len(self.docs):
-            doc = self.docs[self._idx]
-            self._idx += 1
-            return doc
-        raise StopAsyncIteration
+    async def _iterate(self):
+        for doc in self._get_docs():
+            yield doc
 
 
 class _MockCollection:
@@ -126,6 +147,41 @@ class _MockCollection:
 
     def find(self, query=None):
         docs = _MockCollection._storage[self.name]
+        if query:
+            filtered = []
+            for d in docs:
+                match = all(d.get(k) == v for k, v in query.items())
+                if match:
+                    filtered.append(d)
+            return _MockCursor(filtered)
+        return _MockCursor(list(docs))
+
+    def aggregate(self, pipeline):
+        """Minimal aggregate support for chat session grouping."""
+        docs = list(_MockCollection._storage[self.name])
+        # Apply $match if present
+        for stage in pipeline:
+            if "$match" in stage:
+                match_q = stage["$match"]
+                docs = [d for d in docs if all(d.get(k) == v for k, v in match_q.items())]
+            elif "$sort" in stage:
+                sort_field = list(stage["$sort"].keys())[0]
+                sort_dir = list(stage["$sort"].values())[0]
+                docs = sorted(docs, key=lambda d: d.get(sort_field, ""), reverse=(sort_dir == -1))
+            elif "$limit" in stage:
+                docs = docs[:stage["$limit"]]
+            elif "$group" in stage:
+                # For chat sessions: group by session_id
+                seen = {}
+                for d in docs:
+                    gid = d.get("session_id", "")
+                    if gid not in seen:
+                        seen[gid] = {
+                            "_id": gid,
+                            "first_message": d.get("content", ""),
+                            "last_date": d.get("created_at"),
+                        }
+                docs = list(seen.values())
         return _MockCursor(docs)
 
     async def create_index(self, *args, **kwargs):

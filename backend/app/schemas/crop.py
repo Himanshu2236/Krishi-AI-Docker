@@ -1,6 +1,6 @@
 """Pydantic schemas for crop recommendation."""
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 
 
 class CropRecommendRequest(BaseModel):
@@ -18,12 +18,40 @@ class AlternativeCrop(BaseModel):
     confidence: float
 
 
+class GrowingConditions(BaseModel):
+    temperature: str
+    humidity: str
+    soil_ph: str
+    soil_type: str
+
+
+class WaterRequirements(BaseModel):
+    annual_rainfall_mm: str
+    irrigation_schedule: str
+    water_sensitivity: str
+
+
+class CropInformation(BaseModel):
+    scientific_name: str
+    season: str
+    growing_period: str
+    expected_yield: str
+    economic_importance: str
+
+
 class CropRecommendResponse(BaseModel):
     recommended_crop: str
     confidence: float
+    model_used: str = "Random Forest Classifier (Scikit-Learn, 99.55% accuracy)"
     alternatives: List[AlternativeCrop]
     reasoning: str
     tips: List[str]
+    crop_information: Optional[CropInformation] = None
+    suitable_growing_conditions: Optional[GrowingConditions] = None
+    estimated_water_requirements: Optional[WaterRequirements] = None
+    crop_info: Optional[Dict[str, Any]] = None
+    growing_conditions: Optional[Dict[str, Any]] = None
+    water_requirements: Optional[Dict[str, Any]] = None
 
 
 class CropHistoryItem(BaseModel):

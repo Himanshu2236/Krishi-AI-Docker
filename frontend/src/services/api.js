@@ -77,6 +77,7 @@ export const chatbotAPI = {
 export const weatherAPI = {
   getCurrent: (location) => api.get('/weather/current', { params: { location } }),
   getForecast: (location) => api.get('/weather/forecast', { params: { location } }),
+  getFull: (location) => api.get('/weather/full', { params: { location } }),
 }
 
 // ─── Mandi Prices ─────────────────────────────────────────────────────────────
@@ -84,6 +85,8 @@ export const mandiAPI = {
   getPrices: (params) => api.get('/mandi/prices', { params }),
   getStates: () => api.get('/mandi/states'),
   getCommodities: () => api.get('/mandi/commodities'),
+  getDistricts: (state) => api.get('/mandi/districts', { params: { state } }),
+  getMarkets: (params) => api.get('/mandi/markets', { params }),
 }
 
 // ─── Government Schemes ───────────────────────────────────────────────────────

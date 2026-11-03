@@ -1,33 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import { chatbotAPI } from '../services/api'
 import { mockChatHistory, suggestedQuestions } from '../services/mockData'
-import { Button, LoadingSpinner } from '../components/UI'
-import { Send, Plus, Trash2, MessageSquareText, Globe, ChevronRight, Bot, User } from 'lucide-react'
+import { Send, Plus, MessageSquareText, Globe, ChevronRight, Bot, User, RefreshCw } from 'lucide-react'
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
   { code: 'hi', label: 'हिंदी', flag: '🇮🇳' },
 ]
-
-// Mock AI responses
-const mockResponses = {
-  en: [
-    "Based on your soil conditions, I recommend wheat cultivation this Rabi season. Ensure proper irrigation every 15-20 days.",
-    "For tomato early blight, apply Mancozeb 75 WP @ 2.5g/L water. Also remove infected leaves immediately.",
-    "The current MSP for wheat is ₹2,275 per quintal as set by the government for 2024-25.",
-    "PM-KISAN provides ₹6,000/year support. Register at pmkisan.gov.in with your Aadhaar and land records.",
-    "For nitrogen deficiency, symptoms include yellowing of lower leaves. Apply Urea @ 50 kg/acre as top dressing.",
-    "To improve soil health, incorporate green manure crops like Dhaincha before sowing, and practice crop rotation.",
-  ],
-  hi: [
-    "आपकी मिट्टी की स्थिति के आधार पर, मैं इस रबी सीजन में गेहूं की खेती की सलाह देता हूं। हर 15-20 दिन में सिंचाई सुनिश्चित करें।",
-    "टमाटर की अर्ली ब्लाइट के लिए, मैनकोजेब 75 WP @ 2.5 ग्राम/लीटर पानी में मिलाकर स्प्रे करें।",
-    "2024-25 के लिए गेहूं का एमएसपी ₹2,275 प्रति क्विंटल निर्धारित है।",
-    "पीएम-किसान ₹6,000/वर्ष की सहायता देता है। pmkisan.gov.in पर आधार और भूमि रिकॉर्ड के साथ पंजीकरण करें।",
-    "नाइट्रोजन की कमी में निचली पत्तियां पीली होती हैं। टॉप ड्रेसिंग के रूप में यूरिया @ 50 किग्रा/एकड़ डालें।",
-    "मिट्टी की सेहत सुधारने के लिए बुवाई से पहले हरी खाद की फसल जैसे ढैंचा उगाएं और फसल चक्र अपनाएं।",
-  ],
-}
 
 function TypingIndicator() {
   return (
@@ -46,6 +25,31 @@ function TypingIndicator() {
   )
 }
 
+function FormattedContent({ content }) {
+  // Simple markdown renderer for linebreaks, bullet points, and bold text
+  const lines = content.split('\n')
+  return (
+    <div className="space-y-1">
+      {lines.map((line, idx) => {
+        if (!line.trim()) return <div key={idx} className="h-1.5" />
+        
+        // Handle bullet items
+        if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+          const itemText = line.trim().substring(2)
+          return (
+            <div key={idx} className="flex items-start gap-1.5 ml-1">
+              <span className="text-emerald-500 font-bold">•</span>
+              <span>{itemText}</span>
+            </div>
+          )
+        }
+        
+        return <p key={idx} className="leading-relaxed">{line}</p>
+      })}
+    </div>
+  )
+}
+
 function ChatMessage({ msg }) {
   const isUser = msg.role === 'user'
   return (
@@ -56,13 +60,13 @@ function ChatMessage({ msg }) {
           : <Bot className="w-4 h-4 text-green-600" />
         }
       </div>
-      <div className={`max-w-[80%] ${isUser ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
+      <div className={`max-w-[85%] ${isUser ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
         <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed
           ${isUser
             ? 'bg-green-600 text-white rounded-br-none shadow-md shadow-green-200/40'
             : 'bg-white border border-gray-100 shadow-sm text-gray-800 rounded-bl-none'
           }`}>
-          {msg.content}
+          <FormattedContent content={msg.content} />
         </div>
         <p className="text-xs text-gray-400 px-1">{msg.time}</p>
       </div>
@@ -75,35 +79,63 @@ export default function ChatbotPage() {
     {
       id: '0',
       role: 'assistant',
-      content: "Namaste! 🌾 I'm Krishi AI, your intelligent farming assistant. I can help you with crop recommendations, disease management, fertilizer advice, government schemes, and more. Ask me anything about farming!",
+      content: "Namaste! 🌾 I'm KRISHI AI, your intelligent farming assistant powered by Groq & Llama models. I can assist with crop recommendations, disease symptoms, fertilizer scheduling, soil conservation, and agricultural practices. How can I help you today?",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     }
   ])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const [language, setLanguage] = useState('en')
-  const [sessions, setSessions] = useState(mockChatHistory)
+  const [sessions, setSessions] = useState([])
   const [activeSession, setActiveSession] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [loadingHistory, setLoadingHistory] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+
+  const fetchSessions = async () => {
+    try {
+      const res = await chatbotAPI.getSessions()
+      if (res?.data?.sessions?.length) {
+        setSessions(res.data.sessions)
+      } else {
+        setSessions(mockChatHistory)
+      }
+    } catch {
+      setSessions(mockChatHistory)
+    }
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
 
   useEffect(() => {
-    // Load sessions from API if available
-    const loadSessions = async () => {
-      try {
-        const res = await chatbotAPI.getSessions()
-        if (res?.data?.sessions?.length) {
-          setSessions(res.data.sessions)
-        }
-      } catch {}
-    }
-    loadSessions()
+    fetchSessions()
   }, [])
+
+  const loadSessionHistory = async (sessionId) => {
+    if (activeSession === sessionId) return
+    setActiveSession(sessionId)
+    setLoadingHistory(true)
+    try {
+      const res = await chatbotAPI.getHistory(sessionId)
+      if (res?.data?.messages && res.data.messages.length > 0) {
+        setMessages(
+          res.data.messages.map((m, idx) => ({
+            id: String(idx),
+            role: m.role,
+            content: m.content,
+            time: m.timestamp ? new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '',
+          }))
+        )
+      }
+    } catch (e) {
+      console.error('Failed to load session history:', e)
+    } finally {
+      setLoadingHistory(false)
+    }
+  }
 
   const sendMessage = async (text) => {
     const content = text || input.trim()
@@ -123,7 +155,7 @@ export default function ChatbotPage() {
       const res = await chatbotAPI.sendMessage({
         message: content,
         language,
-        session_id: activeSession,
+        session_id: activeSession || undefined,
       })
 
       const replyText = res?.data?.reply
@@ -134,18 +166,20 @@ export default function ChatbotPage() {
       const botMsg = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: replyText || mockResponses[language][0],
+        content: replyText || 'Response received.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       }
       setMessages(m => [...m, botMsg])
-    } catch {
-      // Fallback response if offline
-      const responses = mockResponses[language]
-      const responseText = responses[Math.floor(Math.random() * responses.length)]
+      fetchSessions()
+    } catch (err) {
+      const fallbackText = language === 'hi'
+        ? "माफ़ करें, सेवा अभी अस्थायी रूप से व्यस्त है। कृपया कुछ पलों बाद पुनः प्रयास करें।"
+        : "Sorry, I am temporarily having trouble reaching the assistant. Please try again shortly."
+      
       const botMsg = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: responseText,
+        content: err?.response?.data?.detail || fallbackText,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       }
       setMessages(m => [...m, botMsg])
@@ -166,7 +200,9 @@ export default function ChatbotPage() {
     setMessages([{
       id: '0',
       role: 'assistant',
-      content: "Namaste! 🌾 Starting a new conversation. How can I help you today?",
+      content: language === 'hi' 
+        ? "नमस्ते! 🌾 नई बातचीत शुरू हो गई है। आज मैं आपकी क्या सहायता कर सकता हूँ?" 
+        : "Namaste! 🌾 Starting a new conversation. How can I assist you with your farm today?",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     }])
     setActiveSession(null)
@@ -180,7 +216,7 @@ export default function ChatbotPage() {
           <h2 className="font-semibold text-gray-800 text-sm">Chat History</h2>
           <button
             onClick={startNewChat}
-            className="flex items-center gap-1 text-xs bg-green-600 text-white px-2.5 py-1.5 rounded-lg hover:bg-green-700"
+            className="flex items-center gap-1 text-xs bg-green-600 text-white px-2.5 py-1.5 rounded-lg hover:bg-green-700 shadow-sm"
           >
             <Plus className="w-3.5 h-3.5" /> New
           </button>
@@ -190,20 +226,23 @@ export default function ChatbotPage() {
           {sessions.map((s) => (
             <button
               key={s.id}
-              onClick={() => setActiveSession(s.id)}
-              className={`w-full text-left p-3 rounded-xl hover:bg-white transition-all border ${activeSession === s.id ? 'bg-white border-green-200 shadow-sm' : 'border-transparent'}`}
+              onClick={() => loadSessionHistory(s.id)}
+              className={`w-full text-left p-3 rounded-xl hover:bg-white transition-all border ${activeSession === s.id ? 'bg-white border-green-300 shadow-sm' : 'border-transparent'}`}
             >
               <p className="text-sm font-medium text-gray-800 truncate">{s.title}</p>
               <p className="text-xs text-gray-400 truncate mt-0.5">{s.preview}</p>
               <p className="text-xs text-gray-300 mt-1">{s.date}</p>
             </button>
           ))}
+          {sessions.length === 0 && (
+            <p className="text-xs text-gray-400 text-center py-6">No previous conversations yet.</p>
+          )}
         </div>
 
         {/* Language selector */}
-        <div className="p-3 border-t border-gray-100">
+        <div className="p-3 border-t border-gray-100 bg-white">
           <p className="text-xs text-gray-500 mb-2 font-medium flex items-center gap-1">
-            <Globe className="w-3.5 h-3.5" /> Language
+            <Globe className="w-3.5 h-3.5" /> Language / भाषा
           </p>
           <div className="flex gap-2">
             {LANGUAGES.map(l => (
@@ -211,7 +250,7 @@ export default function ChatbotPage() {
                 key={l.code}
                 onClick={() => setLanguage(l.code)}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all
-                  ${language === l.code ? 'bg-green-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-green-300'}`}
+                  ${language === l.code ? 'bg-green-600 text-white shadow-sm' : 'bg-gray-50 text-gray-600 border border-gray-200 hover:border-green-300'}`}
               >
                 {l.flag} {l.label}
               </button>
@@ -223,32 +262,50 @@ export default function ChatbotPage() {
       {/* Main chat */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="h-14 border-b border-gray-100 px-4 flex items-center gap-3">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500"
-          >
-            <MessageSquareText className="w-4 h-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-              <Bot className="w-4 h-4 text-green-600" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-800">Krishi AI Bot</p>
-              <p className="text-xs text-green-600 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full pulse-green inline-block"></span>
-                Online · {LANGUAGES.find(l => l.code === language)?.label}
-              </p>
+        <div className="h-14 border-b border-gray-100 px-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500"
+              title="Toggle sidebar"
+            >
+              <MessageSquareText className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <Bot className="w-4 h-4 text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-800">KRISHI AI Farming Assistant</p>
+                <p className="text-xs text-green-600 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full pulse-green inline-block"></span>
+                  Groq LLM Active · {LANGUAGES.find(l => l.code === language)?.label}
+                </p>
+              </div>
             </div>
           </div>
+
+          <button
+            onClick={startNewChat}
+            className="text-xs text-gray-500 hover:text-green-600 flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-gray-50"
+          >
+            <RefreshCw className="w-3.5 h-3.5" /> Reset Chat
+          </button>
         </div>
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4">
-          {messages.map(msg => <ChatMessage key={msg.id} msg={msg} />)}
-          {typing && <TypingIndicator />}
-          <div ref={messagesEndRef} />
+          {loadingHistory ? (
+            <div className="flex items-center justify-center h-full text-xs text-gray-400">
+              Loading chat history...
+            </div>
+          ) : (
+            <>
+              {messages.map(msg => <ChatMessage key={msg.id} msg={msg} />)}
+              {typing && <TypingIndicator />}
+              <div ref={messagesEndRef} />
+            </>
+          )}
         </div>
 
         {/* Suggested questions */}
@@ -279,7 +336,7 @@ export default function ChatbotPage() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={language === 'hi' ? 'अपना सवाल यहाँ लिखें...' : 'Ask about farming, crops, diseases...'}
+                placeholder={language === 'hi' ? 'फसल, बीमारी, उर्वरक या सरकारी योजनाओं के बारे में पूछें...' : 'Ask about crops, diseases, fertilizers, or soil management...'}
                 rows={1}
                 className="w-full bg-transparent px-4 py-3 text-sm resize-none outline-none text-gray-800 placeholder-gray-400 max-h-32"
                 style={{ minHeight: '48px' }}
@@ -294,7 +351,7 @@ export default function ChatbotPage() {
             </button>
           </div>
           <p className="text-xs text-gray-400 text-center mt-2">
-            Press Enter to send · Shift+Enter for new line
+            Press Enter to send · Shift+Enter for new line · Certified advice should be confirmed with your local KVK
           </p>
         </div>
       </div>

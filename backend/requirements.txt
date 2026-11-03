@@ -1,17 +1,45 @@
+# ─── KRISHI AI Backend Dependencies ─────────────────────────────────────────
+# Python >=3.11 required (project uses Python 3.14)
+
+# ── Web Framework ────────────────────────────────────────────────────────────
 fastapi>=0.115.0
 uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12        # File uploads (disease image detection)
+
+# ── Data Validation ──────────────────────────────────────────────────────────
 pydantic>=2.10.0
-email-validator>=2.0.0
 pydantic-settings>=2.6.0
-pymongo>=4.10.0
-motor>=3.6.0
-python-jose[cryptography]>=3.3.0
-passlib[bcrypt]>=1.7.4
-bcrypt>=4.0.0
-python-multipart>=0.0.12
-httpx>=0.28.0
-python-dotenv>=1.0.0
-slowapi>=0.1.9
-loguru>=0.7.2
-Pillow>=11.0.0
-requests>=2.32.0
+email-validator>=2.0.0          # Email format validation in auth schemas
+
+# ── Database ─────────────────────────────────────────────────────────────────
+pymongo>=4.10.0                 # Sync PyMongo (used by Motor internally)
+motor>=3.6.0                    # Async MongoDB driver (Motor)
+
+# ── Authentication & Security ─────────────────────────────────────────────────
+python-jose[cryptography]>=3.3.0  # JWT token creation and verification
+passlib[bcrypt]>=1.7.4            # Password hashing (bcrypt)
+bcrypt>=4.0.0                     # bcrypt backend for passlib
+
+# ── AI – Groq Llama Chatbot ──────────────────────────────────────────────────
+groq>=1.7.0                     # Official Groq Python SDK (AsyncGroq)
+
+# ── Machine Learning – Crop Recommendation ───────────────────────────────────
+scikit-learn>=1.9.0             # Random Forest Classifier (crop_model.joblib)
+joblib>=1.5.0                   # Model serialization/deserialization
+pandas>=3.0.0                   # DataFrame for named feature inference
+numpy>=2.0.0                    # Numerical operations
+
+# ── Machine Learning – Disease Detection (CNN) ────────────────────────────────
+torch>=2.15.0                   # PyTorch CPU (plant_disease_model.pth)
+torchvision>=0.20.0             # Image transforms (if needed)
+opencv-python>=5.0.0            # cv2 image preprocessing (resize, normalize)
+Pillow>=11.0.0                  # PIL image loading from bytes
+
+# ── HTTP & Utilities ─────────────────────────────────────────────────────────
+httpx>=0.28.0                   # Async HTTP client (weather API calls)
+requests>=2.32.0                # Sync HTTP (external data fetch utilities)
+python-dotenv>=1.0.0            # .env file loading
+
+# ── Rate Limiting & Logging ──────────────────────────────────────────────────
+slowapi>=0.1.9                  # FastAPI rate limiting (via SlowAPI)
+loguru>=0.7.2                   # Structured application logging

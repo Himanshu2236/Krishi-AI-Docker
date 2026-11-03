@@ -1,0 +1,403 @@
+{
+  "classes": [
+    "Corn___Cercospora_leaf_spot",
+    "Corn___Common_rust",
+    "Corn___Northern_Leaf_Blight",
+    "Corn___Healthy",
+    "Pepper___Bacterial_spot",
+    "Pepper___Healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___Healthy",
+    "Rice___Bacterial_leaf_blight",
+    "Rice___Brown_spot",
+    "Rice___Leaf_smut",
+    "Rice___Healthy",
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites",
+    "Tomato___Target_Spot",
+    "Tomato___Yellow_Leaf_Curl_Virus",
+    "Tomato___Mosaic_virus",
+    "Tomato___Healthy"
+  ],
+  "disease_info": {
+    "Corn___Cercospora_leaf_spot": {
+      "crop": "Corn (Maize)",
+      "disease": "Cercospora Leaf Spot (Gray Leaf Spot)",
+      "is_healthy": false,
+      "symptoms": "Small, tan to brown rectangular lesions that run parallel to leaf veins, eventually coalescing to blight large portions of leaves.",
+      "possible_causes": "Fungus Cercospora zeae-maydis surviving in surface crop residue during warm, humid weather (25-30°C).",
+      "prevention": [
+        "Select disease-resistant or tolerant corn hybrids.",
+        "Implement 2-year crop rotation with non-host crops like soybean.",
+        "Till surface crop residues into soil where feasible."
+      ],
+      "management": [
+        "Apply recommended strobilurin or triazole fungicides at VT-R1 stage when lesions reach third leaf below ear.",
+        "Ensure adequate potassium levels to strengthen stalks and foliage.",
+        "Improve drainage and spacing to minimize canopy humidity."
+      ]
+    },
+    "Corn___Common_rust": {
+      "crop": "Corn (Maize)",
+      "disease": "Common Rust",
+      "is_healthy": false,
+      "symptoms": "Oval to elongated reddish-brown pustules (uredinia) scattered on both upper and lower leaf surfaces, rupturing the epidermis.",
+      "possible_causes": "Fungus Puccinia sorghi transported by wind currents during moderate temperatures (16-25°C) and high humidity.",
+      "prevention": [
+        "Plant resistant maize hybrids with Rp-resistance genes.",
+        "Early planting to avoid high airborne spore loads late in season.",
+        "Monitor weather forecasts during vegetative growth."
+      ],
+      "management": [
+        "Apply foliar fungicides (Azoxystrobin or Pyraclostrobin) if pustules appear prior to tasseling on susceptible hybrids.",
+        "Maintain balanced soil fertility (avoid excess nitrogen)."
+      ]
+    },
+    "Corn___Northern_Leaf_Blight": {
+      "crop": "Corn (Maize)",
+      "disease": "Northern Leaf Blight",
+      "is_healthy": false,
+      "symptoms": "Long, elliptical cigar-shaped grayish-green to tan lesions (2.5 to 15 cm long) starting on lower leaves and moving upward.",
+      "possible_causes": "Fungus Exserohilum turcicum thriving in wet, cool-to-moderate conditions (18-27°C).",
+      "prevention": [
+        "Use multi-genic resistant corn hybrids.",
+        "Rotate fields out of corn for at least 1-2 years.",
+        "Incorporate infected residues through deep tillage."
+      ],
+      "management": [
+        "Spray Mancozeb 75 WP (2 g/L) or Propiconazole 25 EC (1 ml/L) upon early detection.",
+        "Consult local Krishi Vigyan Kendra (KVK) for regional spray thresholds."
+      ]
+    },
+    "Corn___Healthy": {
+      "crop": "Corn (Maize)",
+      "disease": "Healthy Plant",
+      "is_healthy": true,
+      "symptoms": "Deep green, vigorous leaves with no necrotic lesions, pustules, or discoloration.",
+      "possible_causes": "Optimal nutrient management, clean seed, and favorable environmental conditions.",
+      "prevention": [
+        "Continue balanced NPK fertilisation (120:60:40 kg/ha).",
+        "Maintain regular scouting schedule every 7-10 days."
+      ],
+      "management": [
+        "No chemical intervention needed.",
+        "Irrigate at critical knee-high and silking stages."
+      ]
+    },
+    "Pepper___Bacterial_spot": {
+      "crop": "Pepper (Bell / Chilli)",
+      "disease": "Bacterial Spot",
+      "is_healthy": false,
+      "symptoms": "Small, water-soaked, dark green circular spots on leaves that turn dark brown with yellow halos; severe defoliation occurs.",
+      "possible_causes": "Bacterium Xanthomonas campestris pv. vesicatoria spread by splashing rain, wind, and contaminated tools.",
+      "prevention": [
+        "Use certified disease-free seeds and hot-water treated seedlings (50°C for 25 min).",
+        "Disinfect greenhouse trays, stakes, and tools before transplanting.",
+        "Avoid overhead sprinkler irrigation."
+      ],
+      "management": [
+        "Spray copper hydroxide (2 g/L) mixed with Streptocycline (0.1 g/L) at first symptom onset.",
+        "Remove and safely destroy heavily infected plants.",
+        "Practice 2-3 year crop rotation away from solanaceous crops."
+      ]
+    },
+    "Pepper___Healthy": {
+      "crop": "Pepper (Bell / Chilli)",
+      "disease": "Healthy Plant",
+      "is_healthy": true,
+      "symptoms": "Firm, upright green foliage without spots, leaf drop, or vein clearing.",
+      "possible_causes": "Proper cultural care, clean seed stock, and good soil aeration.",
+      "prevention": [
+        "Maintain mulching to suppress weeds and splash dispersal.",
+        "Ensure consistent soil moisture without waterlogging."
+      ],
+      "management": [
+        "No chemical treatment required.",
+        "Apply organic bio-stimulants or neem oil preventively."
+      ]
+    },
+    "Potato___Early_blight": {
+      "crop": "Potato",
+      "disease": "Early Blight",
+      "is_healthy": false,
+      "symptoms": "Small, dark brown to black spots with characteristic concentric rings ('target board' pattern) appearing first on older lower leaves.",
+      "possible_causes": "Fungus Alternaria solani surviving in crop debris and solanaceous weeds.",
+      "prevention": [
+        "Plant certified pathogen-free seed tubers.",
+        "Ensure 3-year crop rotation with legumes or cereals.",
+        "Maintain optimal potassium and nitrogen nutrition to avoid plant stress."
+      ],
+      "management": [
+        "Apply Mancozeb 75 WP @ 2.5 g/L or Chlorothalonil 75 WP @ 2 g/L at 7-10 day intervals.",
+        "Remove and burn senescing lower leaves with severe infection.",
+        "Kill vines 10-14 days before harvest to prevent tuber infection."
+      ]
+    },
+    "Potato___Late_blight": {
+      "crop": "Potato",
+      "disease": "Late Blight",
+      "is_healthy": false,
+      "symptoms": "Water-soaked, pale to dark green lesions turning purplish-black rapidly; white fungal downy growth visible on leaf undersides in humid conditions.",
+      "possible_causes": "Oomycete Phytophthora infestans favored by cool temperatures (12-20°C) and relative humidity >90%.",
+      "prevention": [
+        "Plant certified resistant varieties (e.g. Kufri Girdhari, Kufri Himalini).",
+        "Eliminate cull piles and volunteer potato plants.",
+        "Ensure hilling to provide thick soil coverage over developing tubers."
+      ],
+      "management": [
+        "Spray systemic fungicide Metalaxyl 8% + Mancozeb 64% WP (Ridomil Gold) @ 2.5 g/L immediately.",
+        "Follow with contact fungicides (Cymoxanil + Mancozeb).",
+        "Never irrigate in the late afternoon or evening."
+      ]
+    },
+    "Potato___Healthy": {
+      "crop": "Potato",
+      "disease": "Healthy Plant",
+      "is_healthy": true,
+      "symptoms": "Vibrant green canopy, sturdy stems, and no necrotic lesions or tuber rot symptoms.",
+      "possible_causes": "Optimal seed treatment, proper ridging, and balanced fertilisation.",
+      "prevention": [
+        "Maintain ridging height to protect tubers from sunlight and blight spores.",
+        "Monitor local agrometeorological alerts for late blight risk."
+      ],
+      "management": [
+        "No chemical fungicide needed.",
+        "Maintain steady soil moisture during tuber bulking."
+      ]
+    },
+    "Rice___Bacterial_leaf_blight": {
+      "crop": "Rice (Paddy)",
+      "disease": "Bacterial Leaf Blight (BLB)",
+      "is_healthy": false,
+      "symptoms": "Water-soaked stripes starting from leaf tips and margins, expanding into wavy, yellowish-white lesions with bacterial ooze beads on young lesions.",
+      "possible_causes": "Bacterium Xanthomonas oryzae pv. oryzae transmitted through irrigation water and severe rainstorms.",
+      "prevention": [
+        "Grow BLB-resistant cultivars (e.g. Improved Samba Mahsuri, PR-126).",
+        "Avoid high doses of nitrogenous fertilizers.",
+        "Drain field water intermittently to aerate root systems."
+      ],
+      "management": [
+        "Spray Copper Oxychloride 50 WP (2.5 g/L) + Streptocycline (0.15 g/L) at first symptom onset.",
+        "Apply MOP (Muriate of Potash) @ 25 kg/ha to improve disease resistance.",
+        "Avoid clipping seedling leaf tips during transplanting."
+      ]
+    },
+    "Rice___Brown_spot": {
+      "crop": "Rice (Paddy)",
+      "disease": "Brown Spot",
+      "is_healthy": false,
+      "symptoms": "Oval or circular dark brown lesions with gray to whitish centers, resembling sesame seeds on leaf blades and glumes.",
+      "possible_causes": "Fungus Bipolaris oryzae (Cochliobolus miyabeanus) associated with nutrient-deficient, poorly drained, or drought-stressed soils.",
+      "prevention": [
+        "Treat seed with Carbendazim 50 WP (2 g/kg seed) before sowing.",
+        "Correct soil deficiencies, especially potassium, silica, and zinc.",
+        "Maintain uniform standing water to reduce plant moisture stress."
+      ],
+      "management": [
+        "Foliar spray of Propiconazole 25 EC (1 ml/L) or Tricyclazole 75 WP (0.6 g/L).",
+        "Apply balanced NPK with micronutrient blend (Zinc sulphate @ 25 kg/ha)."
+      ]
+    },
+    "Rice___Leaf_smut": {
+      "crop": "Rice (Paddy)",
+      "disease": "Leaf Smut",
+      "is_healthy": false,
+      "symptoms": "Small, angular black, raised spots scattered across leaf blades; ruptured spots release black powdery mass of teliospores.",
+      "possible_causes": "Fungus Entyloma oryzae prevalent in high-nitrogen, densely planted crops late in the season.",
+      "prevention": [
+        "Avoid excessive nitrogen application.",
+        "Adopt recommended row spacing (20 x 15 cm) for airflow.",
+        "Deep plow stubble after harvest."
+      ],
+      "management": [
+        "Usually minor; apply Mancozeb 75 WP (2 g/L) if infection reaches upper flag leaves.",
+        "Ensure timely harvest once grains reach physiological maturity."
+      ]
+    },
+    "Rice___Healthy": {
+      "crop": "Rice (Paddy)",
+      "disease": "Healthy Plant",
+      "is_healthy": true,
+      "symptoms": "Uniform emerald-green canopy with clean tillers and no necrotic spots or bacterial ooze.",
+      "possible_causes": "Certified treated seed, balanced basal nutrition, and disciplined water management.",
+      "prevention": [
+        "Adopt Alternate Wetting and Drying (AWD) water management.",
+        "Scout weekly for stem borer and blast symptoms."
+      ],
+      "management": [
+        "No chemical intervention needed.",
+        "Apply scheduled top dressing of nitrogen (Urea) at tillering and panicle initiation."
+      ]
+    },
+    "Tomato___Bacterial_spot": {
+      "crop": "Tomato",
+      "disease": "Bacterial Spot",
+      "is_healthy": false,
+      "symptoms": "Small, greasy, circular spots (<3 mm) on leaves, stems, and fruit; leaves turn yellow and drop prematurely.",
+      "possible_causes": "Bacterium Xanthomonas vesicatoria transmitted via seed and water splash in warm, wet weather.",
+      "prevention": [
+        "Use certified disease-free seeds or hot-water seed treatment.",
+        "Disinfect nursery trays and stakes with 10% sodium hypochlorite.",
+        "Do not work in fields when foliage is wet."
+      ],
+      "management": [
+        "Spray Copper Oxychloride 50 WP (2.5 g/L) + Streptocycline (0.1 g/L) at weekly intervals.",
+        "Prune and safely destroy lower infected suckers and leaves.",
+        "Implement 3-year crop rotation away from solanaceous plants."
+      ]
+    },
+    "Tomato___Early_blight": {
+      "crop": "Tomato",
+      "disease": "Early Blight",
+      "is_healthy": false,
+      "symptoms": "Dark brown circular spots with distinct concentric rings ('target board') and yellow chlorotic halos, beginning on older lower leaves.",
+      "possible_causes": "Fungus Alternaria solani surviving in crop residue, favored by warm temperatures (24-29°C) and humid conditions.",
+      "prevention": [
+        "Stake plants and mulch soil with clean straw or plastic.",
+        "Prune lower leaves up to 30 cm from ground level.",
+        "Practice 3-year crop rotation with non-solanaceous crops."
+      ],
+      "management": [
+        "Spray Mancozeb 75 WP @ 2.5 g/L or Chlorothalonil 75 WP @ 2 g/L at 7-10 day intervals.",
+        "Apply bio-fungicide Trichoderma harzianum as root dip and soil drench.",
+        "Avoid overhead irrigation; use drip irrigation systems."
+      ]
+    },
+    "Tomato___Late_blight": {
+      "crop": "Tomato",
+      "disease": "Late Blight",
+      "is_healthy": false,
+      "symptoms": "Large, irregular water-soaked greenish-black lesions on leaves and stems; white moldy growth appears on undersides during wet conditions; fruit develops greasy brown rot.",
+      "possible_causes": "Oomycete Phytophthora infestans triggered by cool, wet weather (15-22°C with high humidity).",
+      "prevention": [
+        "Plant resistant tomato hybrids (e.g. Arka Rakshak, Arka Samrat).",
+        "Provide wide row spacing (90 x 60 cm) for canopy ventilation.",
+        "Avoid planting adjacent to potato fields."
+      ],
+      "management": [
+        "Immediately spray Cymoxanil 8% + Mancozeb 64% WP @ 2.5 g/L.",
+        "Alternate with Dimethomorph 50 WP (1 g/L) in high-pressure periods.",
+        "Remove and destroy severely affected plants to halt spore dispersal."
+      ]
+    },
+    "Tomato___Leaf_Mold": {
+      "crop": "Tomato",
+      "disease": "Leaf Mold",
+      "is_healthy": false,
+      "symptoms": "Pale greenish-yellow spots with indistinct margins on upper leaf surfaces; olive-green to brown velvety fungal growth on corresponding lower surfaces.",
+      "possible_causes": "Fungus Passalora fulva (Cladosporium fulvum) common in greenhouse and high-density humid plantings (>85% RH).",
+      "prevention": [
+        "Ensure vigorous greenhouse ventilation and air circulation.",
+        "Space plants adequately to reduce humidity within canopy.",
+        "Avoid wetting foliage during watering."
+      ],
+      "management": [
+        "Spray Copper Hydroxide (2 g/L) or Difenoconazole 25 EC (0.5 ml/L).",
+        "Ventilate and heat greenhouses to lower relative humidity below 80%."
+      ]
+    },
+    "Tomato___Septoria_leaf_spot": {
+      "crop": "Tomato",
+      "disease": "Septoria Leaf Spot",
+      "is_healthy": false,
+      "symptoms": "Numerous small circular spots (1.5-3 mm) with dark brown borders and grayish-white centers dotted with tiny black pycnidia.",
+      "possible_causes": "Fungus Septoria lycopersici spread by rain splashes and mechanical handling.",
+      "prevention": [
+        "Destroy all crop debris after final harvest.",
+        "Apply organic or plastic mulch around plant bases.",
+        "Practice strict 2-year crop rotation."
+      ],
+      "management": [
+        "Apply Mancozeb 75 WP (2.5 g/L) or Zineb 75 WP (2 g/L) at first sign of lower leaf spotting.",
+        "Prune off infected lower leaves and dispose away from the field."
+      ]
+    },
+    "Tomato___Spider_mites": {
+      "crop": "Tomato",
+      "disease": "Two-Spotted Spider Mite Damage",
+      "is_healthy": false,
+      "symptoms": "Fine yellow stippling or bronzing on upper leaf surfaces, with fine silken webbing visible on undersides; leaves turn brittle and drop.",
+      "possible_causes": "Tetranychus urticae mites proliferating rapidly in hot, dry, dusty field conditions.",
+      "prevention": [
+        "Keep field borders and access paths free of dusty weeds.",
+        "Maintain adequate irrigation to avoid plant water stress.",
+        "Conserve predatory mites and ladybird beetles."
+      ],
+      "management": [
+        "Spray wettable sulphur 80 WP @ 3 g/L or Propargite 57 EC @ 2 ml/L.",
+        "Apply neem seed kernel extract (NSKE 5%) or Neem Oil (5 ml/L).",
+        "Wash leaves with high-pressure water spray where feasible."
+      ]
+    },
+    "Tomato___Target_Spot": {
+      "crop": "Tomato",
+      "disease": "Target Spot",
+      "is_healthy": false,
+      "symptoms": "Brown circular lesions with faint concentric rings appearing on both leaves and fruit; infected leaves turn yellow and drop.",
+      "possible_causes": "Fungus Corynespora cassiicola thriving in warm, tropical conditions with prolonged leaf wetness.",
+      "prevention": [
+        "Improve air circulation through trellising and suckering.",
+        "Avoid working in fields when plants are wet.",
+        "Rotate with non-solanaceous crops."
+      ],
+      "management": [
+        "Apply Azoxystrobin 23 SC @ 1 ml/L or Chlorothalonil 75 WP @ 2 g/L.",
+        "Ensure thorough coverage of both upper and lower leaf surfaces."
+      ]
+    },
+    "Tomato___Yellow_Leaf_Curl_Virus": {
+      "crop": "Tomato",
+      "disease": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+      "is_healthy": false,
+      "symptoms": "Severe plant stunting, erect bushy growth, upward leaf curling ('cupping'), marginal yellowing, and drastic flower drop.",
+      "possible_causes": "Begomovirus transmitted exclusively by the sweetpotato whitefly (Bemisia tabaci).",
+      "prevention": [
+        "Install yellow sticky traps (15-20 per acre) for early whitefly monitoring.",
+        "Use 40-50 mesh insect-proof netting in nurseries.",
+        "Plant TYLCV-tolerant hybrids (e.g. US 440, NS 501)."
+      ],
+      "management": [
+        "Control whitefly vectors using Acetamiprid 20 SP (0.3 g/L) or Spiromesifen 22.9 SC (1 ml/L).",
+        "Rogue and immediately bag and destroy infected symptomatic plants.",
+        "Spray systemic insecticides or neem oil (3 ml/L) at nursery stage."
+      ]
+    },
+    "Tomato___Mosaic_virus": {
+      "crop": "Tomato",
+      "disease": "Tomato Mosaic Virus (ToMV)",
+      "is_healthy": false,
+      "symptoms": "Mottled light and dark green mosaic patterns on foliage, distorted 'shoestring' or fern-like leaves, and uneven fruit ripening.",
+      "possible_causes": "Tobamovirus mechanically transmitted via contaminated hands, clothing, pruning shears, and infected seed.",
+      "prevention": [
+        "Disinfect hands and pruning shears in 20% non-fat dry milk solution.",
+        "Wash hands with soap and water after handling tobacco products.",
+        "Use certified virus-free seed."
+      ],
+      "management": [
+        "No chemical cure exists for viral plant infections.",
+        "Promptly rogue and incinerate infected plants.",
+        "Control aphids and thrips to prevent secondary pathogen stress."
+      ]
+    },
+    "Tomato___Healthy": {
+      "crop": "Tomato",
+      "disease": "Healthy Plant",
+      "is_healthy": true,
+      "symptoms": "Vigorous lush green canopy, dark green foliage, healthy flower clusters, and clean developing fruit.",
+      "possible_causes": "Clean seed stock, good sanitation, staking, drip irrigation, and balanced nutrition.",
+      "prevention": [
+        "Continue preventative bi-weekly sprays of neem-based formulations.",
+        "Maintain drip irrigation schedule and support stakes."
+      ],
+      "management": [
+        "No chemical pesticide required.",
+        "Apply water-soluble 19-19-19 @ 5 g/L during flowering and fruiting."
+      ]
+    }
+  }
+}

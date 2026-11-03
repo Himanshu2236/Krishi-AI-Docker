@@ -1,0 +1,69 @@
+{
+  "architecture": "PlantDiseaseCNN (4 Conv Blocks + AdaptiveAvgPool + Dense)",
+  "num_classes": 23,
+  "classes": [
+    "Corn___Cercospora_leaf_spot",
+    "Corn___Common_rust",
+    "Corn___Northern_Leaf_Blight",
+    "Corn___Healthy",
+    "Pepper___Bacterial_spot",
+    "Pepper___Healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___Healthy",
+    "Rice___Bacterial_leaf_blight",
+    "Rice___Brown_spot",
+    "Rice___Leaf_smut",
+    "Rice___Healthy",
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites",
+    "Tomato___Target_Spot",
+    "Tomato___Yellow_Leaf_Curl_Virus",
+    "Tomato___Mosaic_virus",
+    "Tomato___Healthy"
+  ],
+  "supported_crops": [
+    "Corn (Maize)",
+    "Pepper (Bell / Chilli)",
+    "Potato",
+    "Rice (Paddy)",
+    "Tomato"
+  ],
+  "test_metrics": {
+    "accuracy": 0.0683,
+    "precision": 0.0776,
+    "recall": 0.0683,
+    "f1_score": 0.0502
+  },
+  "training_history": {
+    "train_loss": [
+      2.9745,
+      2.7594,
+      2.7163,
+      2.6674,
+      2.616
+    ],
+    "val_loss": [
+      2.7871,
+      2.8396,
+      2.6774,
+      2.7879,
+      2.8504
+    ],
+    "val_acc": [
+      0.0435,
+      0.0683,
+      0.0745,
+      0.1118,
+      0.0807
+    ]
+  },
+  "confusion_matrix_shape": [
+    23,
+    23
+  ]
+}

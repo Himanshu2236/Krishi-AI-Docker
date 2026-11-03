@@ -1,0 +1,95 @@
+{
+  "model_name": "Random Forest",
+  "features": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ],
+  "num_classes": 22,
+  "classes": [
+    "apple",
+    "banana",
+    "blackgram",
+    "chickpea",
+    "coconut",
+    "coffee",
+    "cotton",
+    "grapes",
+    "jute",
+    "kidneybeans",
+    "lentil",
+    "maize",
+    "mango",
+    "mothbeans",
+    "mungbean",
+    "muskmelon",
+    "orange",
+    "papaya",
+    "pigeonpeas",
+    "pomegranate",
+    "rice",
+    "watermelon"
+  ],
+  "all_models_compared": [
+    {
+      "model_name": "Random Forest",
+      "accuracy": 0.9955,
+      "precision": 0.9957,
+      "recall": 0.9955,
+      "f1_score": 0.9955,
+      "cv_5fold_accuracy": 0.9943
+    },
+    {
+      "model_name": "Gradient Boosting",
+      "accuracy": 0.9886,
+      "precision": 0.9897,
+      "recall": 0.9886,
+      "f1_score": 0.9887,
+      "cv_5fold_accuracy": 0.9875
+    },
+    {
+      "model_name": "Decision Tree",
+      "accuracy": 0.9795,
+      "precision": 0.981,
+      "recall": 0.9795,
+      "f1_score": 0.9794,
+      "cv_5fold_accuracy": 0.9835
+    },
+    {
+      "model_name": "Gaussian Naive Bayes",
+      "accuracy": 0.9955,
+      "precision": 0.9959,
+      "recall": 0.9955,
+      "f1_score": 0.9954,
+      "cv_5fold_accuracy": 0.9943
+    },
+    {
+      "model_name": "Support Vector Machine",
+      "accuracy": 0.9841,
+      "precision": 0.9856,
+      "recall": 0.9841,
+      "f1_score": 0.984,
+      "cv_5fold_accuracy": 0.9761
+    },
+    {
+      "model_name": "K-Nearest Neighbors",
+      "accuracy": 0.9795,
+      "precision": 0.9804,
+      "recall": 0.9795,
+      "f1_score": 0.9793,
+      "cv_5fold_accuracy": 0.9659
+    }
+  ],
+  "best_metrics": {
+    "accuracy": 0.9955,
+    "precision": 0.9957,
+    "recall": 0.9955,
+    "f1_score": 0.9955,
+    "cv_accuracy": 0.9943
+  },
+  "dataset_size": 2200
+}

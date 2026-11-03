@@ -1,8 +1,14 @@
 """Chatbot router."""
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import StreamingResponse
 from typing import Optional
 from app.schemas.chat import ChatMessageRequest, ChatMessageResponse
-from app.services.chat_service import chat_with_ai, get_chat_sessions, get_session_history
+from app.services.chat_service import (
+    chat_with_ai,
+    stream_chat_with_ai,
+    get_chat_sessions,
+    get_session_history,
+)
 from app.core.security import get_current_user
 
 router = APIRouter(prefix="/chat", tags=["AI Chatbot"])
@@ -21,6 +27,21 @@ async def send_message(
         session_id=data.session_id,
     )
     return result
+
+
+@router.post("/stream")
+async def stream_message(
+    data: ChatMessageRequest,
+    current_user: dict = Depends(get_current_user),
+):
+    """Stream AI responses in real-time."""
+    generator = stream_chat_with_ai(
+        user_id=current_user["id"],
+        message=data.message,
+        language=data.language,
+        session_id=data.session_id,
+    )
+    return StreamingResponse(generator, media_type="text/plain")
 
 
 @router.get("/sessions")
