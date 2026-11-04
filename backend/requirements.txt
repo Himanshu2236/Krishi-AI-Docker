@@ -43,3 +43,6 @@ python-dotenv>=1.0.0            # .env file loading
 # ── Rate Limiting & Logging ──────────────────────────────────────────────────
 slowapi>=0.1.9                  # FastAPI rate limiting (via SlowAPI)
 loguru>=0.7.2                   # Structured application logging
+
+# ── Testing ──────────────────────────────────────────────────────────────────
+pytest>=9.0.0                   # Backend automated testing framework

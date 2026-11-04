@@ -178,8 +178,47 @@ def test_groq_fallbacks():
     print(f"        EN fallbacks: {len(AGRI_FALLBACKS['en'])}, HI fallbacks: {len(AGRI_FALLBACKS['hi'])}")
 check("Agronomic fallback responses", test_groq_fallbacks)
 
-# ─── MODULE 5: Backend Core ──────────────────────────────────────────────────
-print("\n[5] Backend Core Infrastructure\n")
+# ─── MODULE 5: External Agricultural Integrations ───────────────────────────
+print("\n[5] External Agricultural Integrations (Weather, Mandi, Schemes)\n")
+
+def test_mandi_service():
+    from app.services.mandi_service import get_prices, get_states, get_districts, get_markets
+    res = get_prices(commodity="Wheat")
+    assert "prices" in res, "No prices returned"
+    assert len(res["prices"]) > 0, "Wheat records missing"
+    assert "data_source" in res, "Missing data provenance source label"
+    assert res["live_available"] is False, "Reference data must not falsely claim to be live"
+    assert len(get_states()) >= 5, "Need at least 5 states"
+    assert len(get_districts()) >= 5, "Need at least 5 districts"
+    print(f"        Mandi prices loaded: {len(res['prices'])} wheat records | States: {len(get_states())}")
+check("Mandi prices service (Agmarknet reference)", test_mandi_service)
+
+def test_schemes_service():
+    from app.services.schemes_service import get_all_schemes, get_scheme_by_id
+    schemes = get_all_schemes()
+    assert len(schemes) >= 7, f"Expected 7 schemes, got {len(schemes)}"
+    titles = [s["title"].lower() for s in schemes]
+    for required in ["pm-kisan", "fasal bima", "kisan credit card", "soil health card", "sinchayee"]:
+        assert any(required in t for t in titles), f"Missing core scheme: {required}"
+    pmkisan = get_scheme_by_id("1")
+    assert pmkisan and pmkisan.get("application_procedure"), "PM-KISAN missing application procedure"
+    assert pmkisan.get("documents"), "PM-KISAN missing required documents"
+    print(f"        Schemes loaded: {len(schemes)} schemes with application procedures & documents")
+check("Government schemes service (7 verified schemes)", test_schemes_service)
+
+def test_weather_advisory_logic():
+    from app.services.weather_service import _farming_suggestions, WEATHER_ICONS
+    suggestions = _farming_suggestions(
+        {"temperature": 32, "humidity": 85, "wind_speed": 10, "rainfall": 0, "main": "Clouds"},
+        [{"main": "Rain"}, {"main": "Rain"}]
+    )
+    assert len(suggestions) > 0, "Failed to generate farming suggestions"
+    assert len(WEATHER_ICONS) >= 8, "Weather icon dictionary incomplete"
+    print(f"        Weather advisory engine generated {len(suggestions)} dynamic recommendations")
+check("Weather-based farming advisory engine", test_weather_advisory_logic)
+
+# ─── MODULE 6: Backend Core ──────────────────────────────────────────────────
+print("\n[6] Backend Core Infrastructure\n")
 
 def test_main_app():
     from app.main import app

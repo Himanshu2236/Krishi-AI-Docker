@@ -71,19 +71,21 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # ─── CORS Middleware ────────────────────────────────────────────────────────
-origins = settings.allowed_origins_list
-if "*" not in origins:
-    # Also add standard local dev ports
-    for default_port in ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"]:
-        if default_port not in origins:
-            origins.append(default_port)
+origins = [o.strip() for o in settings.allowed_origins_list if o.strip()]
+default_dev_ports = ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000", "http://localhost:80", "http://127.0.0.1:80"]
+for port_url in default_dev_ports:
+    if port_url not in origins and "*" not in origins:
+        origins.append(port_url)
+
+allow_credentials = "*" not in origins
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins if "*" not in origins else ["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=origins,
+    allow_credentials=allow_credentials,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    expose_headers=["X-Process-Time"],
 )
 
 

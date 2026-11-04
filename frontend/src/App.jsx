@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { LanguageProvider } from './context/LanguageContext'
 import { useAuth } from './context/AuthContext'
 import MainLayout from './layouts/MainLayout'
 import AuthLayout from './layouts/AuthLayout'
@@ -36,7 +37,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
+        <LanguageProvider>
+          <Routes>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
           <Route element={<AuthLayout />}>
@@ -64,6 +66,7 @@ function App() {
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>
   )

@@ -1,26 +1,28 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useLanguage } from '../context/LanguageContext'
 import {
   LayoutDashboard, Sprout, Microscope, FlaskConical, MessageSquareText,
   CloudSun, TrendingUp, FileText, User, ChevronLeft, ChevronRight,
   LogOut, X, Leaf
 } from 'lucide-react'
 
-const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/crop-recommendation', icon: Sprout, label: 'Crop Recommendation' },
-  { to: '/disease-detection', icon: Microscope, label: 'Disease Detection' },
-  { to: '/fertilizer', icon: FlaskConical, label: 'Fertilizer' },
-  { to: '/chatbot', icon: MessageSquareText, label: 'AI Chatbot' },
-  { to: '/weather', icon: CloudSun, label: 'Weather' },
-  { to: '/mandi-prices', icon: TrendingUp, label: 'Mandi Prices' },
-  { to: '/schemes', icon: FileText, label: 'Govt. Schemes' },
-  { to: '/profile', icon: User, label: 'Profile' },
-]
-
 export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
   const { user, logout } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
+
+  const navItems = [
+    { to: '/dashboard', icon: LayoutDashboard, label: t('dashboard') },
+    { to: '/crop-recommendation', icon: Sprout, label: t('cropRecommendation') },
+    { to: '/disease-detection', icon: Microscope, label: t('diseaseDetection') },
+    { to: '/fertilizer', icon: FlaskConical, label: t('fertilizerAdvisor') },
+    { to: '/chatbot', icon: MessageSquareText, label: t('aiChatbot') },
+    { to: '/weather', icon: CloudSun, label: t('weather') },
+    { to: '/mandi-prices', icon: TrendingUp, label: t('mandiPrices') },
+    { to: '/schemes', icon: FileText, label: t('govtSchemes') },
+    { to: '/profile', icon: User, label: t('myProfile') },
+  ]
 
   const handleLogout = () => {
     logout()
@@ -41,7 +43,7 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
       <div className={`flex items-center h-16 border-b border-gray-100 px-4 ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
         {!isCollapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center shadow-xs">
               <Leaf className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -50,12 +52,12 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
           </div>
         )}
         {isCollapsed && (
-          <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center shadow-xs">
             <Leaf className="w-5 h-5 text-white" />
           </div>
         )}
         {/* Mobile close */}
-        <button onClick={onClose} className="lg:hidden p-1 rounded-lg hover:bg-gray-100 text-gray-500">
+        <button onClick={onClose} aria-label="Close menu" className="lg:hidden p-1 rounded-lg hover:bg-gray-100 text-gray-500">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -64,7 +66,7 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
       {!isCollapsed && user && (
         <div className="mx-3 mt-3 p-3 bg-green-50 rounded-xl border border-green-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-2xs">
               {user.name?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
@@ -82,6 +84,7 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
             <li key={to}>
               <NavLink
                 to={to}
+                onClick={onClose}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150
                   ${isActive
@@ -93,7 +96,7 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
                 title={isCollapsed ? label : undefined}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
-                {!isCollapsed && <span>{label}</span>}
+                {!isCollapsed && <span className="truncate">{label}</span>}
               </NavLink>
             </li>
           ))}
@@ -103,7 +106,8 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
       {/* Collapse toggle (desktop) */}
       <button
         onClick={onToggleCollapse}
-        className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm hover:bg-green-50 text-gray-500 hover:text-green-600"
+        aria-label="Toggle sidebar width"
+        className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full items-center justify-center shadow-xs hover:bg-green-50 text-gray-500 hover:text-green-600"
       >
         {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
       </button>
@@ -113,10 +117,10 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
         <button
           onClick={handleLogout}
           className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all ${isCollapsed ? 'justify-center' : ''}`}
-          title={isCollapsed ? 'Logout' : undefined}
+          title={isCollapsed ? t('logout') : undefined}
         >
-          <LogOut className="w-5 h-5" />
-          {!isCollapsed && <span>Logout</span>}
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          {!isCollapsed && <span>{t('logout')}</span>}
         </button>
       </div>
     </aside>

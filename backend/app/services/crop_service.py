@@ -15,23 +15,33 @@ from app.schemas.crop import CropRecommendRequest
 from loguru import logger
 
 # ── Load Scikit-Learn Model ──────────────────────────────────────────────────
-MODEL_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../../ml-models/crop-recommendation/crop_model.joblib")
-)
+CANDIDATE_MODEL_PATHS = [
+    os.getenv("CROP_MODEL_PATH", ""),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../ml-models/crop-recommendation/crop_model.joblib")),
+    os.path.abspath(os.path.join(os.getcwd(), "ml-models/crop-recommendation/crop_model.joblib")),
+    os.path.abspath(os.path.join(os.getcwd(), "../ml-models/crop-recommendation/crop_model.joblib")),
+    "/app/ml-models/crop-recommendation/crop_model.joblib",
+]
 
 _model_artifact = None
 
 def get_model():
     global _model_artifact
     if _model_artifact is None:
-        if os.path.exists(MODEL_PATH):
+        model_found_path = None
+        for p in CANDIDATE_MODEL_PATHS:
+            if p and os.path.exists(p):
+                model_found_path = p
+                break
+
+        if model_found_path:
             try:
-                _model_artifact = joblib.load(MODEL_PATH)
-                logger.info(f"Loaded crop recommendation model from {MODEL_PATH}")
+                _model_artifact = joblib.load(model_found_path)
+                logger.info(f"Loaded crop recommendation model from {model_found_path}")
             except Exception as e:
-                logger.error(f"Failed to load crop model: {e}")
+                logger.error(f"Failed to load crop model from {model_found_path}: {e}")
         else:
-            logger.warning(f"Crop model file not found at {MODEL_PATH}")
+            logger.warning(f"Crop model file not found in candidates: {[p for p in CANDIDATE_MODEL_PATHS if p]}")
     return _model_artifact
 
 # ── Agronomic Knowledge Base for All 22 Crops ────────────────────────────────

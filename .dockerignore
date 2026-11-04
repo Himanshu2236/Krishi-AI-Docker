@@ -1,0 +1,18 @@
+# Root .dockerignore
+node_modules
+.git
+.gitignore
+.env
+.env.local
+.vscode
+.idea
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+dist
+build
+coverage
+*.log
+.DS_Store

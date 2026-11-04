@@ -63,12 +63,16 @@ _METADATA = {}
 def _find_model_paths():
     """Locate the plant disease model and metadata files."""
     candidate_dirs = [
+        os.getenv("DISEASE_MODEL_DIR", ""),
         os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "ml-models", "disease-detection")),
         os.path.abspath(os.path.join(os.getcwd(), "ml-models", "disease-detection")),
         os.path.abspath(os.path.join(os.getcwd(), "..", "ml-models", "disease-detection")),
+        "/app/ml-models/disease-detection",
     ]
     
     for c_dir in candidate_dirs:
+        if not c_dir:
+            continue
         model_p = os.path.join(c_dir, "plant_disease_model.pth")
         meta_p = os.path.join(c_dir, "disease_metadata.json")
         if os.path.exists(model_p) and os.path.exists(meta_p):
